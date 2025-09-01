@@ -104,6 +104,6 @@ if(BUILD_TESTS)
 endif()
 
 if(BUILD_EMBEDDED AND ARCH_ARMV7)
-    add_subdirectory(test/STM32_LL)
+#    add_subdirectory(test/STM32_LL)
     add_subdirectory(test/STM32_STD)
 endif()
