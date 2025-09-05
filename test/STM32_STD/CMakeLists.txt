@@ -36,11 +36,11 @@ target_include_directories(${TARGET_NAME} PRIVATE
 # Add linked libraries
 target_link_libraries(${TARGET_NAME} QCSML)
 
-#set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
-#set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
-#
-#add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
-#        COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.elf> ${HEX_FILE}
-#        COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}.elf> ${BIN_FILE}
-#        COMMENT "Building ${HEX_FILE}
-#Building ${BIN_FILE}")
+set(HEX_FILE ${PROJECT_BINARY_DIR}/${TARGET_NAME}.hex)
+set(BIN_FILE ${PROJECT_BINARY_DIR}/${TARGET_NAME}.bin)
+
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+        COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${TARGET_NAME}> ${HEX_FILE}
+        COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${TARGET_NAME}> ${BIN_FILE}
+        COMMENT "Building ${HEX_FILE}
+Building ${BIN_FILE}")
