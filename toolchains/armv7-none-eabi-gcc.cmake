@@ -78,7 +78,7 @@ set(ASM_FLAGS
 # 6. Linker Flags
 # ----------------------------------------------------------------------------
 set(LINK_SCRIPT
-        -T${CMAKE_SOURCE_DIR}/test/STM32_LL/STM32F407XX_FLASH.ld # Linker script
+        -T${CMAKE_SOURCE_DIR}/test/STM32_STD/STM32F407XX_FLASH.ld # Linker script
 )
 
 set(LINK_FLAGS
