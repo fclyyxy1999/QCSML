@@ -2,10 +2,10 @@
 
 void RegularPrint(char* str, int n,double running_time) {
     if(strcmp(str,"sm4_enc") == 0 || strcmp(str, "sm4_dec") == 0) {
-        printf("%-16s%-12d%-12.3f%.3f Mbps/s\r\n", str, n, running_time, (double) (n << 7) / 1000000 / running_time);
+        printf("%-16s%-12d%-12.3f%.3f Mbps\r\n", str, n, running_time, (double) (n << 7) / 1000000 / running_time);
     }
     else if(strcmp(str,"sm3") == 0) {
-        printf("%-16s%-12d%-12.3f%.3f Mbps/s\r\n", "sm3", n, running_time, (double) (n << 9) / (running_time * 1000000));
+        printf("%-16s%-12d%-12.3f%.3f Mbps\r\n", "sm3", n, running_time, (double) (n << 9) / (running_time * 1000000));
     }
     else
         printf("%-16s%-12d%-12.3f%.3f ops/s\r\n", str, n, running_time, n / running_time);
