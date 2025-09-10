@@ -2,7 +2,7 @@
 .arch armv7
 .thumb
 
-// State update function for 0~15 rounds, sp register points to the message w[i], r0 is the constant 0x79cc4519
+# State update function for 0~15 rounds, sp register points to the message w[i], r0 is the constant 0x79cc4519
 .macro RF0 a b c d e f g h i
     LDR r1, [sp], #0x04                         // r1 = w[i]
     LDR r2, [sp, #0x0C]                         // r2 = w[i+4]
@@ -32,7 +32,7 @@
     ROR \f, #13
 .endm
 
-// State update function for rounds 16~63, sp register points to the message w[i], r0 is the constant 0x7a879d8a
+# State update function for rounds 16~63, sp register points to the message w[i], r0 is the constant 0x7a879d8a
 .macro RF1 a b c d e f g h i
     LDR r1, [sp], #0x04                         // r1 = w[i]
     LDR r2, [sp, #0x0C]                         // r2 = w[i+4]
@@ -65,11 +65,11 @@
     ROR \f, #13
 .endm
 
-// Message expansion: w[i+16] = P1(w[i] ^ w[i+7] ^ (w[i+13] <<< 15)) ^ (w[i+3] <<< 7) ^ w[i+10]
-// P1(x) = x ^ x <<< 15 ^ x <<< 23 = x ^ x >>> 17 ^ x >>> 9
-// Since the width of the sliding registers (w0-w13) is 14, there are no additional registers available for calculating P1(x).
-// Therefore, w7 will be used as a temporary register here and restored from memory later.
-// We hope you can have a better way to avoid reading the memory one more time.
+# Message expansion: w[i+16] = P1(w[i] ^ w[i+7] ^ (w[i+13] <<< 15)) ^ (w[i+3] <<< 7) ^ w[i+10]
+# P1(x) = x ^ x <<< 15 ^ x <<< 23 = x ^ x >>> 17 ^ x >>> 9
+# Since the width of the sliding registers (w0-w13) is 14, there are no additional registers available for calculating P1(x).
+# Therefore, w7 will be used as a temporary register here and restored from memory later.
+# We hope you can have a better way to avoid reading the memory one more time.
 
 .macro MSGEXP w0 w3 w7 w10 w13 i
     LDR \w13, [sp, #((13 + \i) << 2)]
@@ -84,30 +84,19 @@
 .endm
 
 .section .text, "ax"
-	.align 4
-    .global sm3_compress
-	.global PUT32
-	.global GET32
-
 .thumb_func
+.align 4
 
-PUT32:
-	REV r1, r1
-	STR r1, [r0]
-	MOV pc, lr
-
-GET32:
-	LDR r0, [r0]
-	REV r0, r0
-	MOV pc, lr
-
+# void sm3_compress(u32 buf[8], const u8 *msg, u32 num);
+.global sm3_compress
+.type   sm3_compress, %function
 sm3_compress:
     PUSH {v1-ip, lr}
 	.Lloop_start:
 	SUBS r2, r2, 1
 	BCC .Lloop_end
 	PUSH {r0-r2}
-    SUB sp, sp, #(52<<2)
+    SUB sp, #(52<<2)
     ADD r1, #0x40
     LDR v3, [r1, #-4]!
     LDR v2, [r1, #-4]!
@@ -195,16 +184,16 @@ sm3_compress:
     MSGEXP r7  r10 r0  r3  r6  49
     MSGEXP r8  r11 r1  r4  r7  50
     MSGEXP r9  r12 r2  r5  r8  51
-    // Load the state.
+    # Load the state.
     LDR r0, =0x79cc4519
     LDR r1, [sp, #(68 << 2)]
     LDM r1, {v1-v8}
-    // Note: Since the LDR offset relative to the current PC value cannot exceed 4KB in ARMV7,
-    // and there are approximately 2000 lines of instructions inside this function that are out of the offset range,
-    // we declare the literal pool here and skip it.
+    # Note: Since the LDR offset relative to the current PC value cannot exceed 4KB in ARMV7,
+    # and there are approximately 2000 lines of instructions inside this function that are out of the offset range,
+    # we declare the literal pool here and skip it.
     B 1f
     .ltorg
-1:  // 0-15
+1:  # 0-15
     RF0 v1 v2 v3 v4 v5 v6 v7 v8 0
     RF0 v4 v1 v2 v3 v8 v5 v6 v7 1
     RF0 v3 v4 v1 v2 v7 v8 v5 v6 2
@@ -221,7 +210,7 @@ sm3_compress:
     RF0 v4 v1 v2 v3 v8 v5 v6 v7 13
     RF0 v3 v4 v1 v2 v7 v8 v5 v6 14
     RF0 v2 v3 v4 v1 v6 v7 v8 v5 15
-    // 16-31
+    # 16-31
     LDR r0 , =0x7a879d8a
     RF1 v1 v2 v3 v4 v5 v6 v7 v8 16
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 17
@@ -239,7 +228,7 @@ sm3_compress:
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 29
     RF1 v3 v4 v1 v2 v7 v8 v5 v6 30
     RF1 v2 v3 v4 v1 v6 v7 v8 v5 31
-    // 32-47
+    # 32-47
     RF1 v1 v2 v3 v4 v5 v6 v7 v8 32
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 33
     RF1 v3 v4 v1 v2 v7 v8 v5 v6 34
@@ -256,7 +245,7 @@ sm3_compress:
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 45
     RF1 v3 v4 v1 v2 v7 v8 v5 v6 46
     RF1 v2 v3 v4 v1 v6 v7 v8 v5 47
-    // 48-63
+    # 48-63
     RF1 v1 v2 v3 v4 v5 v6 v7 v8 48
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 49
     RF1 v3 v4 v1 v2 v7 v8 v5 v6 50
@@ -273,7 +262,7 @@ sm3_compress:
     RF1 v4 v1 v2 v3 v8 v5 v6 v7 61
     RF1 v3 v4 v1 v2 v7 v8 v5 v6 62
     RF1 v2 v3 v4 v1 v6 v7 v8 v5 63
-    //
+    # Add the compressed chunk to the current hash value.
     ADD sp, sp, #16
     LDR ip, [sp]
     LDM ip!, {r0-r3}
@@ -286,11 +275,14 @@ sm3_compress:
     EOR v6, r1
     EOR v7, r2
     EOR v8, r3
+    # Store the updated state.
     STMDB ip, {v1-v8}
     POP {r0-r2}
     ADD r1, r1, #0x40
+    # Next block
 	B .Lloop_start
 	.Lloop_end:
+	# Restore registers and return
     POP {v1-ip, lr}
     MOV pc, lr
 .end

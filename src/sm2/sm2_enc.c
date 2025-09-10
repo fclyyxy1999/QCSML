@@ -106,26 +106,16 @@ void sm2_ciptext_to_der(const sm2_ciptext* ct, u8 **dst, u64 *dstl) {
 }
 
 void sm2_ciptext_from_der(sm2_ciptext *ct, const u8 **src, u64 *srcl) {
-    u8 *buf = malloc(*srcl);
+    u8 *buf = malloc(*srcl), tmp[32];
     const u8 *_buf = buf;
-    u64 seqlen = 0, genlen = 0, clen;
+    u64 seqlen = 0, genlen = 0, clen = 0;
     asn1_sequence_from_der(buf, &seqlen, src, srcl);
-    asn1_integer_from_der(ct->C1.x, &genlen, &_buf, &seqlen);
-    asn1_integer_from_der(ct->C1.y, &genlen, &_buf, &seqlen);
+    asn1_integer_from_der(tmp, &genlen, &_buf, &seqlen);
+    memcpy(ct->C1.x + 32 - genlen, tmp, genlen);
+    asn1_integer_from_der(tmp, &genlen, &_buf, &seqlen);
+    memcpy(ct->C1.y + 32 - genlen, tmp, genlen);
     asn1_octets_from_der(ct->C3, &genlen, &_buf, &seqlen);
     asn1_octets_from_der(ct->C2, &clen, &_buf, &seqlen);
     ct->clen = (u32) clen;
     free(buf);
 }
-
-// int sm2_encrypt_init();
-//
-// int sm2_encrypt_update();
-//
-// int sm2_encrypt_finish();
-//
-// int sm2_decrypt_init();
-//
-// int sm2_decrypt_update();
-//
-// int sm2_decrypt_finish();

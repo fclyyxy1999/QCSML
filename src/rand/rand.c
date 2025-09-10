@@ -101,17 +101,13 @@ int rand_pad(const char *in, const u32 len) {
     if (in == NULL)
         return -1;
 
-    // clean buf if it exists
-    if (pst.buf)
-        free(pst.buf);
-
     u8 *buf = malloc(len);
     if (buf == NULL) {
         perror("malloc failed");
         return -1;
     }
 
-    bytes_from_hexstr(buf, in, len);
+    bytes_from_str(buf, in, len);
 
     mode = FRNG;
     pst.buf = buf;

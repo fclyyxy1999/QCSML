@@ -194,3 +194,4 @@ int asn1_sequence_from_der(u8 *data, u64 *datalen, const u8 **src, u64 *srclen) 
     *srclen -= *datalen;
     return 1;
 }
+

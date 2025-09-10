@@ -2,10 +2,9 @@
 .arch armv7
 .thumb
 
-// keyschdul
+# keyschdul round function
 .macro KRF k0 k1 k2 k3 ck
-	MOVW r0, #:lower16:\ck
-    MOVT r0, #:upper16:\ck
+	LDR r0, =\ck
 	EOR r0, \k1
 	EOR r0, \k2
 	EOR r0, \k3
@@ -24,7 +23,7 @@
 	STR \k0, [ip], #4
 .endm
 
-// stateupdate in encrypt
+# encrypt round function
 .macro ERF p0 p1 p2 p3 
 	LDR r0, [ip], #4
 	EOR r0, \p1
@@ -44,7 +43,7 @@
 	EOR \p0, r3
 .endm
 
-// stateupdate in decrypt
+# decrypt round function
 .macro DRF p0 p1 p2 p3 
 	LDR r0, [ip], #-4
 	EOR r0, \p1
@@ -63,15 +62,14 @@
 	EOR \p0, r2
 	EOR \p0, r3
 .endm
-.section .date, "aw"
-	rk: .word 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-		
-.section .text
-	.global sm4_setkey_core
-	.global sm4_enc_core
-	.global sm4_dec_core
 
+.section .text, "ax"
 .thumb_func
+.align 4
+
+# void sm4_setkey_core(u32 *rk, const u8 *key);
+.global sm4_setkey_core
+.type   sm4_setkey_core, %function
 sm4_setkey_core:
 	PUSH {v1-v8, ip}
     MOV ip, r0
@@ -92,7 +90,7 @@ sm4_setkey_core:
 	ADD v6, v5, 0x400
 	ADD v7, v6, 0x400
 	ADD v8, v7, 0x400
-    // 1-8
+    # 1-8
     KRF v1 v2 v3 v4 0x00070e15
     KRF v2 v3 v4 v1 0x1c232a31
     KRF v3 v4 v1 v2 0x383f464d
@@ -101,7 +99,7 @@ sm4_setkey_core:
     KRF v2 v3 v4 v1 0x8c939aa1
     KRF v3 v4 v1 v2 0xa8afb6bd
     KRF v4 v1 v2 v3 0xc4cbd2d9
-	// 9-16
+	# 9-16
     KRF v1 v2 v3 v4 0xe0e7eef5
     KRF v2 v3 v4 v1 0xfc030a11
     KRF v3 v4 v1 v2 0x181f262d
@@ -110,7 +108,7 @@ sm4_setkey_core:
     KRF v2 v3 v4 v1 0x6c737a81
     KRF v3 v4 v1 v2 0x888f969d
     KRF v4 v1 v2 v3 0xa4abb2b9
-	// 17-24
+	# 17-24
     KRF v1 v2 v3 v4 0xc0c7ced5
     KRF v2 v3 v4 v1 0xdce3eaf1
     KRF v3 v4 v1 v2 0xf8ff060d
@@ -119,7 +117,7 @@ sm4_setkey_core:
     KRF v2 v3 v4 v1 0x4c535a61
     KRF v3 v4 v1 v2 0x686f767d
     KRF v4 v1 v2 v3 0x848b9299
-	// 25-32
+	# 25-32
     KRF v1 v2 v3 v4 0xa0a7aeb5
     KRF v2 v3 v4 v1 0xbcc3cad1
     KRF v3 v4 v1 v2 0xd8dfe6ed
@@ -132,6 +130,9 @@ sm4_setkey_core:
     MOV pc, lr
     .ltorg
 
+# void sm4_enc_core(u8 *out, const u8 *in, const u32 *rk);
+.global sm4_enc_core
+.type   sm4_enc_core, %function
 sm4_enc_core:
     PUSH {v1-v8, ip}
     PUSH {r0}
@@ -141,11 +142,11 @@ sm4_enc_core:
 	REV v2, v2
 	REV v3, v3
 	REV v4, v4
-	LDR v5, =rt
+	LDR v5, = rt
 	ADD v6, v5, 0x400
 	ADD v7, v6, 0x400
 	ADD v8, v7, 0x400
-	// 1-8
+	# 1-8
     ERF v1 v2 v3 v4
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
@@ -154,7 +155,7 @@ sm4_enc_core:
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
     ERF v4 v1 v2 v3
-	// 9-16
+	# 9-16
     ERF v1 v2 v3 v4
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
@@ -163,7 +164,7 @@ sm4_enc_core:
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
     ERF v4 v1 v2 v3
-	// 17-24
+	# 17-24
     ERF v1 v2 v3 v4
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
@@ -172,7 +173,7 @@ sm4_enc_core:
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
     ERF v4 v1 v2 v3
-	// 25-32
+	# 25-32
     ERF v1 v2 v3 v4
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
@@ -181,7 +182,7 @@ sm4_enc_core:
     ERF v2 v3 v4 v1
     ERF v3 v4 v1 v2
     ERF v4 v1 v2 v3
-	//输出密文
+
 	REV v1, v1
 	REV v2, v2
 	REV v3, v3
@@ -195,6 +196,9 @@ sm4_enc_core:
 	MOV pc, lr
     .ltorg
 
+# void sm4_dec_core(u8 *out, const u8 *in, const u32 *rk);
+.global sm4_dec_core
+.type   sm4_dec_core, %function
 sm4_dec_core:
     PUSH {v1-v8, ip}
     PUSH {r0}
@@ -209,7 +213,7 @@ sm4_dec_core:
 	ADD v7, v6, 0x400
 	ADD v8, v7, 0x400
 	ADD ip, 0x7C
-	// 1-8
+	# 1-8
     DRF v1 v2 v3 v4
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
@@ -218,7 +222,7 @@ sm4_dec_core:
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
     DRF v4 v1 v2 v3
-	// 9-16
+	# 9-16
     DRF v1 v2 v3 v4
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
@@ -227,7 +231,7 @@ sm4_dec_core:
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
     DRF v4 v1 v2 v3
-	// 17-24
+	# 17-24
     DRF v1 v2 v3 v4
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
@@ -236,7 +240,7 @@ sm4_dec_core:
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
     DRF v4 v1 v2 v3
-	// 25-32
+	# 25-32
     DRF v1 v2 v3 v4
     DRF v2 v3 v4 v1
     DRF v3 v4 v1 v2
@@ -246,7 +250,6 @@ sm4_dec_core:
     DRF v3 v4 v1 v2
     DRF v4 v1 v2 v3
 
-	// 输出明文
 	REV v1, v1
 	REV v2, v2
 	REV v3, v3

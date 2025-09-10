@@ -2,7 +2,6 @@
 #include "asn1.h"
 #include "sm2.h"
 
-
 static void sm2_compute_z(sm3_digest z, const sm2_pubkey *pubkey, const char *id, const u32 idlen) {
     static u32 date[32] = {
         0xfeffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000000, 0xffffffff, 0xfcffffff,
@@ -184,10 +183,13 @@ void sm2_sig_to_der(const sm2_signature* sig, u8 **dst, u64 *dstl) {
 }
 
 void sm2_sig_from_der(sm2_signature *sig, const u8 **src, u64 *srcl) {
-    u8 buf[Sign_sequence_max_size];
+    u8 buf[Sign_sequence_max_size], tmp[32];
     const u8 *_buf = buf;
-    u64 blen = 0, rlen, slen;
+    u64 blen = 0, rlen = 0, slen = 0;
     asn1_sequence_from_der(buf, &blen, src, srcl);
-    asn1_integer_from_der(sig->r, &rlen, &_buf, &blen);
-    asn1_integer_from_der(sig->s, &slen, &_buf, &blen);
+    memset(sig, 0, sizeof(*sig));
+    asn1_integer_from_der(tmp, &rlen, &_buf, &blen);
+    memcpy(sig->r + 32 - rlen, tmp, rlen);
+    asn1_integer_from_der(tmp, &slen, &_buf, &blen);
+    memcpy(sig->s + 32 - slen, tmp, slen);
 }
