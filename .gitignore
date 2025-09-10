@@ -1,3 +1,5 @@
 .vscode
 build
 test/other
+test/tmp
+toolchains/starm-clang.cmake
