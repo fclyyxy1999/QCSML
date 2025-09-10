@@ -3,8 +3,8 @@
  * This header file defines functions for generating random bytes and filling buffers with random data.
  * It is used in cryptographic applications to ensure security through randomness.
  */
-#ifndef RAND_H
-#define RAND_H
+#ifndef QCSML_RAND_H
+#define QCSML_RAND_H
 
 #include "common.h"
 typedef int (*rand_func)(void *buf, u32 len);
@@ -29,4 +29,4 @@ int rand_reg(rand_func func);
  */
 int rand_pad(const char *in, u32 len);
 
-#endif //RAND_H
+#endif //QCSML_RAND_H

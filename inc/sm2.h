@@ -8,8 +8,8 @@
  * @version 2.0
  */
 
-#ifndef SM_SM2_H
-#define SM_SM2_H
+#ifndef QCSML_SM2_H
+#define QCSML_SM2_H
 
 #include "sm2_core.h"
 #include "sm3.h"
@@ -286,4 +286,4 @@ void sm2_encrypt(const sm2_pubkey *pubkey, u8 *ct, u64 *ctlen, const void* pt, u
  */
 int sm2_decrypt(const sm2_prikey *prikey, u8 *pt, u64 *ptlen, const void* ct, u64 ctlen);
 
-#endif // SM_SM2_H
+#endif // QCSML_SM2_H

@@ -1,5 +1,5 @@
-#ifndef SM_ASN1_H
-#define SM_ASN1_H
+#ifndef QCSML_ASN1_H
+#define QCSML_ASN1_H
 #include <string.h>
 #include "common.h"
 
@@ -170,4 +170,4 @@ int asn1_sequence_to_der(const u8 *data, u64 datalen, u8 **dst, u64 *dstlen);
  */
 int asn1_sequence_from_der(u8 *data, u64 *datalen, const u8 **src, u64 *srclen);
 
-#endif // SM_ASN1_H
+#endif // QCSML_ASN1_H

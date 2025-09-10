@@ -7,8 +7,8 @@
  * @version 2.0
  */
 
-#ifndef SM_SM3_H
-#define SM_SM3_H
+#ifndef QCSML_SM3_H
+#define QCSML_SM3_H
 
 #include "common.h"
 
@@ -64,5 +64,5 @@ void sm3_finish(sm3_ctx *ctx, u8 dgst[32]);
  */
 void sm3(u8 digest[32], const void *msg, u64 mlen);
 
-#endif //SM_SM3_H
+#endif //QCSML_SM3_H
 

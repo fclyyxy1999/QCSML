@@ -8,8 +8,8 @@
  * @version 2.0
  */
 
-#ifndef SM2_CORE_H
-#define SM2_CORE_H
+#ifndef QCSML_SM2_CORE_H
+#define QCSML_SM2_CORE_H
 
 #include "common.h"
 #include "rand.h"
@@ -176,13 +176,6 @@ void sm2_fp_dbl(sm2_fp r, const sm2_fp a);
 void sm2_fp_tri(sm2_fp r, const sm2_fp a);
 
 /**
- * @brief Computes the reduction modulo sm2_p, i.e., r ≡ c mod sm2_p.
- * @param [out] r The result number.
- * @param [in] c The dnumber to recover from.
- */
-void sm2_fp_rec(sm2_fp r, const sm2_dfp c);
-
-/**
  * @brief Computes multiplication modulo sm2_p, i.e., r ≡ a * b mod sm2_p.
  * @param [out] r The result number.
  * @param [in] a The first number.
@@ -191,7 +184,7 @@ void sm2_fp_rec(sm2_fp r, const sm2_dfp c);
 void sm2_fp_mul(sm2_fp r, const sm2_fp a, const sm2_fp b);
 
 /**
- * @brief Computes squaring modulo sm2_p, i.e., r ≡ a^2 mod sm2_p.
+ * @brief Computes squaring modulo sm2_p, i.e., r ≡ a² mod sm2_p.
  * @param [out] r The result number.
  * @param [in] a The number to square.
  */
@@ -205,7 +198,7 @@ void sm2_fp_sqr(sm2_fp r, const sm2_fp a);
 void sm2_fp_cub(sm2_fp r, const sm2_fp a);
 
 /**
- * @brief Computes multiplicative inverse modulo sm2_p, i.e., r ≡ a^-1 mod sm2_p.
+ * @brief Computes multiplicative inverse modulo sm2_p, i.e., r ≡ a⁻¹ mod sm2_p.
  * @param [out] r The result number.
  * @param [in] q The number to invert.
  */
@@ -228,13 +221,6 @@ void sm2_fn_add(sm2_fp r, const sm2_fp a, const sm2_fp b);
 void sm2_fn_sub(sm2_fp r, const sm2_fp a, const sm2_fp b);
 
 /**
- * @brief Computes the reduction modulo sm2_n, i.e., r ≡ a mod sm2_n.
- * @param [out] r The result number.
- * @param [in] a The dnumber to recover from.
- */
-void sm2_fn_rec(sm2_fp r, const sm2_dfp a);
-
-/**
  * @brief Computes multiplication modulo sm2_n, i.e., r ≡ a * b mod sm2_n.
  * @param [out] r The result number.
  * @param [in] a The first number.
@@ -243,7 +229,7 @@ void sm2_fn_rec(sm2_fp r, const sm2_dfp a);
 void sm2_fn_mul(sm2_fp r, const sm2_fp a, const sm2_fp b);
 
 /**
- * @brief Computes multiplicative inverse modulo sm2_n, i.e., r ≡ a^-1 mod sm2_n.
+ * @brief Computes multiplicative inverse modulo sm2_n, i.e., r ≡ a⁻¹ mod sm2_n.
  * @param [out] r The result number.
  * @param [in] q The number to invert.
  */
@@ -504,7 +490,7 @@ void sm2_japoint_sub(sm2_jpoint *r, const sm2_jpoint *p, const sm2_apoint *q);
  * @param [out] r Pointer to the resulting SM2JacobianPoint.
  * @param [in] a Pointer to the SM2JacobianPoint to be doubled.
  */
-void sm2_jpoint_dou(sm2_jpoint *r, const sm2_jpoint *a);
+void sm2_jpoint_dbl(sm2_jpoint *r, const sm2_jpoint *a);
 
 /**
  * @brief Performs scalar multiplication on a Jacobian point.
@@ -536,4 +522,4 @@ void sm2_jpoint_gen(sm2_jpoint *r, const sm2_fp k);
     extern const sm2_apoint fpt[52];
 #endif
 
-#endif // SM2_CORE_H
+#endif // QCSML_SM2_CORE_H

@@ -7,17 +7,14 @@
  * @version 2.0
  */
 
-#ifndef SM_SM4_H
-#define SM_SM4_H
+#ifndef QCSML_SM4_H
+#define QCSML_SM4_H
 
 #include "common.h"
 
 #define SM4_BLOCKSIZE     16
 #define SM4_BLOCKSIZE_16  256
 #define SM4_ROUNDS        32
-
-extern const u32 kt[4][256];
-extern const u32 rt[4][256];
 
 typedef struct SM4Context {
     u32 rk[SM4_ROUNDS];         /// Round keys for SM4 encryption/decryption
@@ -83,4 +80,4 @@ void sm4_encrypt(const sm4_ctx *ctx, const u8 *in, u8 *out, u32 length);
 void sm4_decrypt(const sm4_ctx *ctx, const u8 *in, u8 *out, u32 length);
 
 
-#endif //SM_SM4_H
+#endif //QCSML_SM4_H
