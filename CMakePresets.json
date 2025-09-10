@@ -33,7 +33,7 @@
       }
     },
     {
-      "name": "Armv7 Asm",
+      "name": "Armv7_Asm",
       "displayName": "ARMv7 (ASM Optimized)",
       "description": "ARMv7 with assembly optimization",
       "generator": "Unix Makefiles",
@@ -44,6 +44,23 @@
         "ARCH": "armv7",
         "CMAKE_BUILD_TYPE": "Release"
       }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "X86",
+      "configurePreset": "X86",
+      "configuration": "Release"
+    },
+    {
+      "name": "Armv7",
+      "configurePreset": "Armv7",
+      "configuration": "Release"
+    },
+    {
+      "name": "Armv7_Asm",
+      "configurePreset": "Armv7_Asm",
+      "configuration": "Release"
     }
   ]
 }
