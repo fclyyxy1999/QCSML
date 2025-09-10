@@ -17,7 +17,7 @@
   [..]
     *** ARM Compiler ***
     --------------------
-    [..] RAM functions are defined using the toolchain options. 
+    [..] RAM functions are defined using the toolchains options.
          Functions that are be executed in RAM should reside in a separate
          source module. Using the 'Options for File' dialog you can simply change
          the 'Code / Const' area of a module to a memory space in physical RAM.
@@ -26,11 +26,11 @@
 
     *** ICCARM Compiler ***
     -----------------------
-    [..] RAM functions are defined using a specific toolchain keyword "__ramfunc".
+    [..] RAM functions are defined using a specific toolchains keyword "__ramfunc".
 
     *** GNU Compiler ***
     --------------------
-    [..] RAM functions are defined using a specific toolchain attribute
+    [..] RAM functions are defined using a specific toolchains attribute
          "__attribute__((section(".RamFunc")))".
   
   @endverbatim

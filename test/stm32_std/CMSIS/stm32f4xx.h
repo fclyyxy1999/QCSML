@@ -107,7 +107,7 @@
 #endif /* STM32F427X */
 
 /*  Tip: To avoid modifying this file each time you need to switch between these
-        devices, you can define the device in your toolchain compiler preprocessor.
+        devices, you can define the device in your toolchains compiler preprocessor.
   */
 
 #if !defined(STM32F40_41xxx) && !defined(STM32F427_437xx) && !defined(STM32F429_439xx) && !defined(STM32F401xx) && !defined(STM32F410xx) && \
@@ -129,7 +129,7 @@
    used in your application 
    
    Tip: To avoid modifying this file each time you need to use different HSE, you
-        can define the HSE value in your toolchain compiler preprocessor.
+        can define the HSE value in your toolchains compiler preprocessor.
   */           
 #if defined(STM32F40_41xxx) || defined(STM32F427_437xx)  || defined(STM32F429_439xx) || defined(STM32F401xx) || \
     defined(STM32F410xx) || defined(STM32F411xE) || defined(STM32F469_479xx)

@@ -8,10 +8,9 @@
 #define 	DEM_CR_TRCENA    			(1<<24)
 #define    	DWT_CR_CYCCNTENA    		(1<<0)
 #define		SystemCoreClockFrequency 	168000000
-extern double RunningTime;			// max time 26s
 
-void DWT_start(void);
+void DWT_Start(void);
 
-void DWT_end(void);
+double DWT_End(void);
 
 

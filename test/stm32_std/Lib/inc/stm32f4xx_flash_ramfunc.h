@@ -46,7 +46,7 @@
 #if defined ( __CC_ARM   )
 /* ARM Compiler
    ------------
-   RAM functions are defined using the toolchain options. 
+   RAM functions are defined using the toolchains options.
    Functions that are executed in RAM should reside in a separate source module.
    Using the 'Options for File' dialog you can simply change the 'Code / Const' 
    area of a module to a memory space in physical RAM.
@@ -58,14 +58,14 @@
 #elif defined ( __ICCARM__ )
 /* ICCARM Compiler
    ---------------
-   RAM functions are defined using a specific toolchain keyword "__ramfunc". 
+   RAM functions are defined using a specific toolchains keyword "__ramfunc".
 */
 #define __RAM_FUNC __ramfunc void
 
 #elif defined   (  __GNUC__  )
 /* GNU Compiler
    ------------
-  RAM functions are defined using a specific toolchain attribute 
+  RAM functions are defined using a specific toolchains attribute
    "__attribute__((section(".RamFunc")))".
 */
 #define __RAM_FUNC void  __attribute__((section(".RamFunc")))
