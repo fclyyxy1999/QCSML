@@ -8,12 +8,14 @@
 QCSML采用cmake(CMakePresets)构建项目，环境搭建与安装使用如下：
 ```
 cd ~/QCSML
-cmake --preset x86-no_asm-release/armv7-no_asm-release/armv7-asm-release
-cmake --build --preset x86-no_asm-release/armv7-no_asm-release/armv7-asm-release
+# 构建
+cmake --preset X86/Armv7/Armv7_Asm
+# 编译
+cmake --build --preset X86/Armv7/Armv7_Asm
 ```
-共三种配置预设，**`x86-no_asm-release`/`armv7-no_asm-release`/`armv7-asm-release`**，分别为**x86平台通用实现、armv7平台通用实现以及armv7平台汇编实现**。编译链接完成后生成如下文件：
+共三种配置预设，**`X86`/`Armv7`/`Armv7_Asm`**，分别为**x86平台通用实现、armv7平台通用实现以及armv7平台汇编实现**。编译链接完成后生成如下文件：
 
-- 可执行文件：x86平台位于`build/x86-no_asm/bin/`，armv7平台为`*.elf`
+- 可执行文件：x86平台位于`build/X86/bin/`，armv7平台为`*.elf`
 - 二进制及十六进制文件(仅armv7)：`*.bin`及`*.hex`
 - 静态库文件：`*.a`
 ### 部署使用
@@ -22,15 +24,15 @@ cmake --build --preset x86-no_asm-release/armv7-no_asm-release/armv7-asm-release
 ## 3.运行结果
 ### x86平台
 测试环境为`Win11 Intel Core i7-10700 @ 2.90GHz`。运行结果如下：
-![img.png](doc/img/img.png)
+![img_2.png](doc/img/img_2.png)
 ### armv7平台
 测试开发板为`STM32F407VGT6 Cortex-M4 @ 168MHz`。通用实现和汇编实现运行结果分别如下：
-![img_2.png](doc/img/img_2.png)
 ![img_3.png](doc/img/img_3.png)
+![img_4.png](doc/img/img_4.png)
 
 ## 4.其他
 可在`sm2_core.h`中指定是否开启查表
-![img_4.png](doc/img/img_4.png)
+![img.png](doc/img/img.png)
 
 ## 5.联系方式
 如有任何问题，请随时联系我们 [ts-zhrch@qcl.edu.cn]() or [ts-lixk@qcl.edu.cn]()。
