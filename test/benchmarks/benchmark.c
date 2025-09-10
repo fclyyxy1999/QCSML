@@ -615,7 +615,7 @@ void pb_sm3(PBUint *u, const u32 count){
     u->count = count;
     u->speed = (double) (count << 9) / (u->time * 1000000);
     strcpy(u->name, "sm3");
-    strcpy(u->unit, "Mbps/s");
+    strcpy(u->unit, "Mbps");
 }
 
 void pb_sm4_enc(PBUint *u, const u32 count){
@@ -632,7 +632,7 @@ void pb_sm4_enc(PBUint *u, const u32 count){
     u->count = count;
     u->speed = (double) (count << 7) / (u->time * 1000000);
     strcpy(u->name, "sm4_enc");
-    strcpy(u->unit, "Mbps/s");
+    strcpy(u->unit, "Mbps");
     free(ctx);
 }
 
@@ -651,7 +651,7 @@ void pb_sm4_dec(PBUint *u, const u32 count){
     u->count = count;
     u->speed = (double) (count << 7) / (u->time * 1000000);
     strcpy(u->name, "sm4_dec");
-    strcpy(u->unit, "Mbps/s");
+    strcpy(u->unit, "Mbps");
     free(ctx);
 }
 
