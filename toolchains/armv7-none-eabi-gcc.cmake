@@ -17,106 +17,97 @@ set(CMAKE_EXECUTABLE_SUFFIX_CXX     ".elf")
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-# arch flags
-set(ARCH_ARMV7 ON CACHE BOOL "ARMv7 architecture")
-set(SUPPORT_ASM ON CACHE BOOL "Enable assembly for ARMv7")
+# STM32F407 Cortex-M4 Build Flags
 
-# STM32F407 Cortex-M4 Build Flags (Well-Organized & English Comments)
-
-# ----------------------------------------------------------------------------
 # 1. Architecture Flags
-# ----------------------------------------------------------------------------
 set(ARCH_FLAGS
-        -mcpu=cortex-m4           # CPU type
-        -mthumb                   # Use Thumb instruction set
-        -mthumb-interwork         # Support Thumb/ARM interworking
+        -mcpu=cortex-m4             # CPU type
+        -mthumb                      # Use Thumb instruction set
 )
 
-# ----------------------------------------------------------------------------
 # 2. FPU/Float Flags
-# ----------------------------------------------------------------------------
 set(FPU_FLAGS
-        -mfpu=fpv4-sp-d16         # FPU type
-        -mfloat-abi=hard          # Use hardware floating point
-        -u_printf_float           # Enable float support for printf
+        -mfpu=fpv4-sp-d16           # FPU type
+        -mfloat-abi=hard            # Use hardware floating point
+        -u_printf_float             # Enable float support for printf
 )
 
-# ----------------------------------------------------------------------------
 # 3. Optimization Flags
-# ----------------------------------------------------------------------------
 set(OPT_FLAGS
-#        -Ofast                    # Maximum optimization
-        -funroll-loops            # Unroll loops
-        -fprefetch-loop-arrays    # Prefetch loop arrays
-        -fomit-frame-pointer      # Omit frame pointer
-        -ffunction-sections       # Place each function in its own section
-        -fdata-sections           # Place each data item in its own section
-        -flto
+        #        -Ofast                    # Maximum optimization
+        -funroll-loops              # Unroll loops
+        -fprefetch-loop-arrays      # Prefetch loop arrays
+        -fomit-frame-pointer        # Omit frame pointer
+        -ffunction-sections         # Place each function in its own section
+        -fdata-sections             # Place each data item in its own section
+        -flto                       # Link Time Optimization
 )
 
-# ----------------------------------------------------------------------------
 # 4. Code Behavior/Compatibility Flags
-# ----------------------------------------------------------------------------
 set(CODE_FLAGS
-        -fno-exceptions           # Disable C++ exceptions
-        -fno-common               # Disable common global variables
-        -fmessage-length=0        # Set message length to 0
-        -mapcs-frame              # Use APCS frame format
-        -mapcs-stack-check        # Enable APCS stack checking
+        -fno-exceptions             # Disable C++ exceptions
+        -fno-common                 # Disable common global variables
+        -fmessage-length=0          # Set message length to 0
+        -mapcs-frame                # Use APCS frame format
+        -mapcs-stack-check          # Enable APCS stack checking
 )
 
-# ----------------------------------------------------------------------------
 # 5. Assembler Flags
-# ----------------------------------------------------------------------------
 set(ASM_FLAGS
-        -x assembler-with-cpp     # Use C preprocessor for assembler
-        -MMD                      # Generate dependency files
-        -MP                       # Add phony targets for dependencies
+        -x assembler-with-cpp       # Use C preprocessor for assembler
+        -MMD                        # Generate dependency files
+        -MP                         # Add phony targets for dependencies
 )
 
-# ----------------------------------------------------------------------------
 # 6. Linker Flags
-# ----------------------------------------------------------------------------
 set(LINK_SCRIPT
-        -T${CMAKE_SOURCE_DIR}/test/STM32_STD/STM32F407XX_FLASH.ld # Linker script
+        -T${CMAKE_SOURCE_DIR}/test/stm32_std/STM32F407XX_FLASH.ld # Linker script
 )
-
 set(LINK_FLAGS
-        -Wl,-gc-sections              # Remove unused sections
-        -Wl,--print-memory-usage      # Print memory usage
-        -Wl,-Map=stm32.map            # Generate map file
-        --specs=nano.specs
+        -Wl,-gc-sections            # Remove unused sections
+        -Wl,--print-memory-usage    # Print memory usage
+        -Wl,-Map=stm32.map          # Generate map file
+        --specs=nano.specs          # Use newlib-nano
+        -flto                       # Link Time Optimization
         ${LINK_SCRIPT}
         ${ARCH_FLAGS}
         ${FPU_FLAGS}
-        -flto
-        -mthumb
-        -mthumb-interwork
 )
 
-# ----------------------------------------------------------------------------
 # 7. Math Library Definitions
-# ----------------------------------------------------------------------------
 add_compile_definitions(
-        ARM_MATH_CM4
-        ARM_MATH_MATRIX_CHECK
-        ARM_MATH_ROUNDING
+        ARM_MATH_CM4                # Cortex-M4 core
+        ARM_MATH_MATRIX_CHECK       # Enable matrix size checking
+        ARM_MATH_ROUNDING           # Enable rounding in math functions
 )
 
-# ----------------------------------------------------------------------------
-# 8. Set C/ASM/Link Flags
-# ----------------------------------------------------------------------------
-string(JOIN " " C_FLAGS_STR ${ARCH_FLAGS} ${FPU_FLAGS} ${OPT_FLAGS} ${CODE_FLAGS})
+
+# 8. Set Warning Flags
+set(WARNING_FLAGS
+        -Wall                       # Enable all warnings
+        -Wextra                     # Enable extra warnings
+        -Wpedantic                  # Enforce strict ISO compliance
+)
+
+# 9. Set Library Flags
+set(LIBRARY_FLAGS
+        -Wl,--start-group           # Start group for linking
+        -lc                         # Standard C library
+        -lm                         # Math library
+        -Wl,--end-group             # End group for linking
+)
+
+# 10. Set C/ASM/Link Flags
+string(JOIN " " C_FLAGS_STR ${ARCH_FLAGS} ${FPU_FLAGS} ${OPT_FLAGS} ${CODE_FLAGS} ${WARNING_FLAGS})
 string(JOIN " " ASM_FLAGS_STR ${ARCH_FLAGS} ${FPU_FLAGS} ${OPT_FLAGS} ${CODE_FLAGS} ${ASM_FLAGS})
-string(JOIN " " LINK_FLAGS_STR ${LINK_FLAGS})
+string(JOIN " " LINK_FLAGS_STR ${LINK_FLAGS} ${LIBRARY_FLAGS})
 
 set(CMAKE_C_FLAGS "${C_FLAGS_STR}")
 set(CMAKE_ASM_FLAGS "${ASM_FLAGS_STR}")
 set(CMAKE_C_LINK_FLAGS "${LINK_FLAGS_STR}")
 
-# ----------------------------------------------------------------------------
-# 9. Print Final Flags (for debugging)
-# ----------------------------------------------------------------------------
+
+# 11. Print Final Flags (for debugging)
 message(STATUS "CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
 message(STATUS "CMAKE_ASM_FLAGS: ${CMAKE_ASM_FLAGS}")
 message(STATUS "CMAKE_C_LINK_FLAGS: ${CMAKE_C_LINK_FLAGS}")
