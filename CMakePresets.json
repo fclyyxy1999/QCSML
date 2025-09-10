@@ -7,63 +7,43 @@
   },
   "configurePresets": [
     {
-      "name": "x86-no_asm-release",
-      "displayName": "x86 (Pure C)",
-      "description": "x86 with pure C implementation",
+      "name": "X86",
+      "displayName": "X86 (Pure C)",
+      "description": "X86 with pure C implementation",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/x86-no_asm",
+      "binaryDir": "${sourceDir}/build/X86",
       "toolchainFile": "${sourceDir}/toolchains/x86_64-linux-gcc.cmake",
       "cacheVariables": {
-        "USE_ASM": "OFF",
-        "BUILD_TESTS": "ON",
-        "BUILD_EMBEDDED": "OFF",
+        "ASM": "OFF",
+        "ARCH": "x86",
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "armv7-no_asm-release",
+      "name": "Armv7",
       "displayName": "ARMv7 (Pure C)",
       "description": "ARMv7 with pure C implementation",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/armv7-no_asm",
-      "toolchainFile": "${sourceDir}/toolchains/armv7-none-eabi-gcc.cmake",
+      "binaryDir": "${sourceDir}/build/Armv7",
+      "toolchainFile": "${sourceDir}/toolchains/gcc-arm-none-eabi.cmake",
       "cacheVariables": {
-        "USE_ASM": "OFF",
-        "BUILD_TESTS": "OFF",
-        "BUILD_EMBEDDED": "ON",
+        "ASM": "OFF",
+        "ARCH": "armv7",
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "armv7-asm-release",
+      "name": "Armv7 Asm",
       "displayName": "ARMv7 (ASM Optimized)",
       "description": "ARMv7 with assembly optimization",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/armv7-asm",
-      "toolchainFile": "${sourceDir}/toolchains/armv7-none-eabi-gcc.cmake",
+      "binaryDir": "${sourceDir}/build/Armv7 Asm",
+      "toolchainFile": "${sourceDir}/toolchains/gcc-arm-none-eabi.cmake",
       "cacheVariables": {
-        "USE_ASM": "ON",
-        "BUILD_TESTS": "OFF",
-        "BUILD_EMBEDDED": "ON",
+        "ASM": "ON",
+        "ARCH": "armv7",
         "CMAKE_BUILD_TYPE": "Release"
       }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "x86-no_asm-release",
-      "configurePreset": "x86-no_asm-release",
-      "configuration": "Release"
-    },
-    {
-      "name": "armv7-no_asm-release",
-      "configurePreset": "armv7-no_asm-release",
-      "configuration": "Release"
-    },
-    {
-      "name": "armv7-asm-release",
-      "configurePreset": "armv7-asm-release",
-      "configuration": "Release"
     }
   ]
 }
