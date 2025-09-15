@@ -37,7 +37,7 @@
       "displayName": "ARMv7 (ASM Optimized)",
       "description": "ARMv7 with assembly optimization",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/Armv7 Asm",
+      "binaryDir": "${sourceDir}/build/Armv7_Asm",
       "toolchainFile": "${sourceDir}/toolchains/gcc-arm-none-eabi.cmake",
       "cacheVariables": {
         "ASM": "ON",
